@@ -47,6 +47,7 @@ interface ProjectIndex {
 
 interface ProjectDocumentsProps {
   projectId: string;
+  refreshKey?: number;
 }
 
 // Styling functions from the global DocumentList
@@ -110,7 +111,7 @@ const getPillText = (fileType: string): string => {
 
 const INITIAL_DOCUMENTS_SHOWN = 12;
 
-export function ProjectDocuments({ projectId }: ProjectDocumentsProps) {
+export function ProjectDocuments({ projectId, refreshKey }: ProjectDocumentsProps) {
   const [documents, setDocuments] = useState<ProjectDocument[]>([]);
   const [projectIndexes, setProjectIndexes] = useState<ProjectIndex[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -229,7 +230,7 @@ export function ProjectDocuments({ projectId }: ProjectDocumentsProps) {
 
   useEffect(() => {
     fetchProjectDocuments();
-  }, [projectId]);
+  }, [projectId, refreshKey]);
 
   const handleRefresh = () => {
     fetchProjectDocuments();
@@ -429,7 +430,7 @@ export function ProjectDocuments({ projectId }: ProjectDocumentsProps) {
               Project Documents
             </CardTitle>
             <CardDescription>
-              {documents.length} documents available from {projectIndexes.length} selected {projectIndexes.length === 1 ? 'index' : 'indexes'}
+              {documents.length} documents from {projectIndexes.length > 0 ? projectIndexes[0].name : 'no index selected'}
             </CardDescription>
           </div>
           <Button variant="outline" size="sm" onClick={handleRefresh}>
