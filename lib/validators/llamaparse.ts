@@ -17,6 +17,7 @@ export const LlamaParseOptionsSchema = z.object({
   fastMode: z.boolean().default(false),
   premiumMode: z.boolean().default(false),
   complexTables: z.boolean().default(false),
+  agenticMode: z.boolean().default(false),
 });
 
 // File validation schema
