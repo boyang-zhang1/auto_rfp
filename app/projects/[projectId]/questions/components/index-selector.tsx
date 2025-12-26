@@ -73,14 +73,16 @@ export function IndexSelector({
           <div className="flex items-center gap-2">
             <Database className="h-5 w-5 text-muted-foreground" />
             <CardTitle className="text-base">
-              {availableIndexes.length === 1 
+              {availableIndexes.length > 0
                 ? availableIndexes[0].name
-                : `${availableIndexes.length} Project Indexes`
+                : 'No Index Selected'
               }
             </CardTitle>
-            <Badge variant="outline" className="text-xs">
-              {selectedIndexes.size} of {availableIndexes.length} selected
-            </Badge>
+            {selectedIndexes.size > 0 && (
+              <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                Active
+              </Badge>
+            )}
           </div>
           <Button
             variant="ghost"
@@ -148,10 +150,10 @@ export function IndexSelector({
               ))}
             </div>
             
-            {selectedIndexes.size > 0 && (
+            {selectedIndexes.size > 0 && availableIndexes.length > 0 && (
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-sm text-green-800">
-                  ✓ AI will use documents from {selectedIndexes.size} selected project {selectedIndexes.size === 1 ? 'index' : 'indexes'} to generate answers.
+                  ✓ AI will use documents from {availableIndexes[0].name} to generate answers.
                 </p>
               </div>
             )}
