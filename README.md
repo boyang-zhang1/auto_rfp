@@ -66,29 +66,31 @@ pnpm install
 
 ### 3. Environment Setup
 
-Create a `.env.local` file in the root directory:
+Create a `.env` file in the root directory:
 
 ```bash
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/auto_rfp"
-DIRECT_URL="postgresql://username:password@localhost:5432/auto_rfp"
+DATABASE_URL=postgresql://username:password@localhost:5432/auto_rfp
+DIRECT_URL=postgresql://username:password@localhost:5432/auto_rfp
 
 # Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL="your-supabase-project-url"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
+NEXT_PUBLIC_SUPABASE_URL=<your-supabase-project-url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 
 # OpenAI API
-OPENAI_API_KEY="your-openai-api-key"
+OPENAI_API_KEY=<your-openai-api-key>
 
 # LlamaCloud
-LLAMACLOUD_API_KEY="your-llamacloud-api-key"
+LLAMACLOUD_API_KEY=<your-llamacloud-api-key>
 # Optional: Internal API key and domain for internal users
-# LLAMACLOUD_API_KEY_INTERNAL="your-internal-llamacloud-api-key"
-# INTERNAL_EMAIL_DOMAIN="@yourdomain.com"  # Defaults to @runllama.ai
+# LLAMACLOUD_API_KEY_INTERNAL=<your-internal-llamacloud-api-key>
+# INTERNAL_EMAIL_DOMAIN=<your-domain>  # Defaults to @runllama.ai
 
 # App Configuration
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
+
+**Note**: To use the env file for the app AND for docker the env var values cannot be in quotes.
 
 ### 4. Database Setup
 
@@ -118,7 +120,7 @@ pnpm prisma db seed
 
 ### 5. Supabase Setup
 
-1. Create a new Supabase project at [supabase.com](https://supabase.com)
+1. Create a new Supabase project at [supabase.com][]
 2. Go to **Settings > API** and copy:
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
    - Anon public key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -127,14 +129,14 @@ pnpm prisma db seed
 
 ### 6. OpenAI Setup
 
-1. Create an account at [platform.openai.com](https://platform.openai.com)
+1. Create an account at [platform.openai.com][]
 2. Generate an API key in **API Keys** section
 3. Add credits to your account
 4. Copy the API key to `OPENAI_API_KEY`
 
 ### 7. LlamaCloud Setup (Optional)
 
-1. Create an account at [cloud.llamaindex.ai](https://cloud.llamaindex.ai)
+1. Create an account at [cloud.llamaindex.ai][]
 2. Create a new project
 3. Generate an API key
 4. Copy the API key to `LLAMACLOUD_API_KEY`
@@ -145,7 +147,7 @@ pnpm prisma db seed
 pnpm dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the application.
+Visit [http://localhost:3000][] to see the application.
 
 ## 📁 Project Structure
 
@@ -241,6 +243,22 @@ The application can be deployed to any platform that supports Node.js:
 - AWS Amplify
 - Google Cloud Run
 
+### Build and Run with Docker
+
+AutoRFP includes Docker support for containerized deployment.
+
+```bash
+# Build the Docker image
+pnpm docker-build
+
+# Run the container
+pnpm docker-run
+```
+
+**Note:** The Docker container uses Next.js standalone output mode for optimized production deployment. Make sure your `.env.local` includes a database connection string that's accessible from within the Docker container.
+
+**IMPORTANT NOTE**: When you build/run a docker container all of the `NEXT_*` env vars are resolved at `build-time` (when the container is built; because the vars also need to be available in the frontend and are generated into the frontend code). The other vars are resolved at `run-time` (when the container is started). Means, if you (for instance) need to set `NEXT_PUBLIC_APP_URL` to your own site (e.g. `https://rfp.mydomain.com`) then you need to make this change to the env file, before you run docker-build.
+
 ## 🔌 API Endpoints
 
 ### Core APIs
@@ -262,7 +280,7 @@ The application can be deployed to any platform that supports Node.js:
 ## 🧪 Sample Data
 
 Try the platform with our sample RFP document:
-- **Sample File**: [RFP - Launch Services for Medium-Lift Payloads](https://qluspotebpidccpfbdho.supabase.co/storage/v1/object/public/sample-files//RFP%20-%20Launch%20Services%20for%20Medium-Lift%20Payloads.pdf)
+- **Sample File**: [RFP - Launch Services for Medium-Lift Payloads][rfp-sample-file]
 - **Use Case**: Download and upload to test question extraction and response generation
 
 ## 🐛 Troubleshooting
@@ -331,7 +349,7 @@ pnpm lint
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE][] file for details.
 
 ## 🙏 Acknowledgments
 
@@ -350,3 +368,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Built with ❤️ using Next.js, LlamaIndex, and OpenAI
+
+[Docker]: https://docs.docker.com/get-docker/
+[LICENSE]: ./LICENSE
+[cloud.llamaindex.ai]: https://cloud.llamaindex.ai
+[http://localhost:3000]: http://localhost:3000
+[platform.openai.com]: https://platform.openai.com
+[rfp-sample-file]: https://qluspotebpidccpfbdho.supabase.co/storage/v1/object/public/sample-files//RFP%20-%20Launch%20Services%20for%20Medium-Lift%20Payloads.pdf
+[supabase.com]: https://supabase.com
